@@ -42,8 +42,13 @@ sshfs.mount = (host, mountpoint, options, callback) ->
   if options && options.cache == false
     cacheOption = '-o cache=no'
 
+  portOption = '-o port=22'
+  if options && options.port
+    portOption = util.format '-o port=%s', options.port
+
+
   # sshfs -o IdentityFile=~/.ssh/id_rsa user@localhost:/ ~/mnt/localhost_mount/
-  command = util.format 'sshfs %s %s -o StrictHostKeyChecking=no %s%s:/ %s', identityOption, cacheOption, userOption, host, mountpoint
+  command = util.format 'sshfs %s %s %s -o StrictHostKeyChecking=no %s%s %s', identityOption, cacheOption, portOption, userOption, host, mountpoint
   sshfs.exec command, callback
     
 ###*
